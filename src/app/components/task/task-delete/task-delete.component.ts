@@ -38,20 +38,8 @@ export class TaskDeleteComponent implements OnInit {
    * Displays an error message if the task loading fails.
    */
   private loadTasks(): void {
-    const token = this.tokenService.getToken();
-    if (!token) {
-      this.message = 'No valid token found';
-      return;
-    }
-
-    this.taskService.getTasksDefault().subscribe({
-      next: (tasks) => {
-        this.tasks = tasks; // Populating the tasks list for deletion
-      },
-      error: (error) => {
-        this.message = 'Failed to load tasks.';
-        console.error('Error loading tasks:', error);
-      }
+    this.taskService.loadTasks((tasks) => {
+      this.tasks = tasks;
     });
   }
 

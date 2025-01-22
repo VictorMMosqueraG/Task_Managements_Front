@@ -3,13 +3,17 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ITaskCreate } from '../models/task/Task.Create.Dto';
 import { IUpdateTaskDto } from '../models/task/Task.Update.Dto';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  constructor(private http:HttpClient) { }
+  constructor(
+    private http:HttpClient,
+    private tokenService:TokenService
+  ) { }
 
   private api = 'http://localhost:5025/api/tasks'
 
@@ -108,4 +112,19 @@ export class TaskService {
     return this.http.get<any>(`http://localhost:5025/api/tasks/findTaskById/${taskId}`);
   }
 
+
+  loadTasks(callback: (tasks: any[]) => void): void {
+    const token = this.tokenService.getToken();
+    if (!token) {
+      throw new Error('No valid token found');
+    }
+
+    this.getTasksDefault().subscribe({
+      next: callback,
+      error: (error) => {
+        console.error('Error loading tasks:', error);
+        throw new Error('Failed to load tasks.');
+      }
+    });
+  }
 }

@@ -39,27 +39,11 @@ export class TaskUpdateComponent implements OnInit {
     this.loadUsers();
   }
 
-  /**
-   * Loads the tasks available for update.
-   */
   private loadTasks(): void {
-    const token = this.tokenService.getToken();
-    if (!token) {
-      this.message = 'No valid token found';
-      return;
-    }
-
-    this.taskService.getTasksDefault().subscribe({
-      next: (tasks) => {
-        this.tasks = tasks;
-      },
-      error: (error) => {
-        this.message = 'Failed to load tasks.';
-        console.error('Error loading tasks:', error);
-      }
+    this.taskService.loadTasks((tasks) => {
+      this.tasks = tasks;
     });
   }
-
   /**
    * Loads the users available for task assignment.
    */
