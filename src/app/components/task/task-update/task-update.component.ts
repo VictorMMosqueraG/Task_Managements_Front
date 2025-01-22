@@ -82,7 +82,14 @@ export class TaskUpdateComponent implements OnInit {
       return;
     }
 
-    this.taskService.updateTask(taskData.taskId, taskData, token).subscribe({
+    const updatedTaskData = {
+      tittle: taskData.tittle,
+      description: taskData.description,
+      status: taskData.status,
+      user: +taskData.userId
+    };
+
+    this.taskService.updateTask(taskData.taskId, updatedTaskData, token).subscribe({
       next: () => {
         this.message = 'Task updated successfully!';
         setTimeout(() => this.router.navigate(['/task-list']), 1000);
