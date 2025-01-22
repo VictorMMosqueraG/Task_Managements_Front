@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUserCreate } from '../models/User.Create.Dto';
-import { IUserLogin } from '../models/User.Login.Dto';
+import { IUserCreate } from '../models/user/User.Create.Dto';
+import { IUserLogin } from '../models/user/User.Login.Dto';
 
 
 /**

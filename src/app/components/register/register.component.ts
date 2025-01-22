@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { IUserCreate } from '../../models/User.Create.Dto';
+import { IUserCreate } from '../../models/user/User.Create.Dto';
 
 /**
 * RegisterComponent is a form-based component that handles user registration.

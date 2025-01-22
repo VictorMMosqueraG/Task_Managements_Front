@@ -1,0 +1,35 @@
+<h1>Create New Task</h1>
+
+<form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="Tittle">Tittle:</label>
+    <input id="Tittle" formControlName="tittle" class="form-control" required />
+  </div>
+
+  <div>
+    <label for="Description">Description:</label>
+    <textarea id="Description" formControlName="description" class="form-control"></textarea>
+  </div>
+
+  <div>
+    <label for="Status">Status:</label>
+    <select id="Status" formControlName="status" class="form-control" required>
+      <option value="InProgress">In Progress</option>
+      <option value="Completed">Completed</option>
+      <option value="Pending">Pending</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="User">User:</label>
+    <select id="User" formControlName="user" class="form-control" required>
+      <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+    </select>
+  </div>
+
+  <div>
+    <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Create Task</button>
+  </div>
+</form>
+
+<p *ngIf="message" style="color: red;">{{ message }}</p>

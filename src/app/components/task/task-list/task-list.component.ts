@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../../service/task.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-task-list',
@@ -24,7 +25,10 @@ export class TaskListComponent  implements OnInit {
     offset: 0,
   };
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private router:Router
+  ) {}
 
   /**
   * Initializes the component and fetches the initial list of tasks.
@@ -65,6 +69,7 @@ export class TaskListComponent  implements OnInit {
   * Navigates to the create task page.
   */
   createTask(): void {
+    this.router.navigate(['task-create']);
   }
 
   /**
