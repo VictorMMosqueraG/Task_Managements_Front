@@ -36,7 +36,6 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private router: Router
   ) {
     // Initialize the form group with form controls and validators.
     this.userForm = this.fb.group({
@@ -59,7 +58,7 @@ export class RegisterComponent {
     const userData: IUserCreate = { ...this.userForm.value };
 
     // Call AuthService to register the user.
-    this.authService.post(userData).subscribe({
+    this.authService.register(userData).subscribe({
       next: () => {
         // If the registration is successful, show a success message.
         this.showSnackBar('User registered successfully!');

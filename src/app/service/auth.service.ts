@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IUserCreate } from '../models/User.Create.Dto';
+import { IUserLogin } from '../models/User.Login.Dto';
 
 
 /**
@@ -29,7 +30,7 @@ export class AuthService {
   * @param user The user information to be sent for registration. The user object must follow the IUserCreate interface structure.
   * @returns An Observable that will emit the API response.
   */
-  post(user:IUserCreate):Observable<any>{
+  register(user:IUserCreate):Observable<any>{
     // Set the HTTP headers for the request.
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -37,5 +38,22 @@ export class AuthService {
 
      // Make a POST request to the /register endpoint of the authentication API.
     return this.http.post(`${this.api}/register`,user,{headers})
+  }
+
+
+  /**
+  * Sends a login request to the authentication API.
+  *
+  * @param user - An object containing user login information (e.g., username and password).
+  * @returns Observable<any> - The observable for the HTTP POST request.
+  */
+  login(user:IUserLogin):Observable<any>{
+    // Set the HTTP headers for the request.
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+     // Make a POST request to the /register endpoint of the authentication API.
+    return this.http.post(`${this.api}/login`,user,{headers})
   }
 }
