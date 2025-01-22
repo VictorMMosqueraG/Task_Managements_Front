@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TaskService } from '../../../service/task.service';
 import { ITaskCreate } from '../../../models/task/Task.Create.Dto';
 import { CommonModule } from '@angular/common';
+import { TokenService } from '../../../service/token.service';
 
 @Component({
   selector: 'app-task-create',
@@ -19,6 +20,7 @@ export class TaskCreateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
+    private tokenService:TokenService,
     private router: Router
   ) {
     this.taskForm = this.fb.group({
@@ -44,7 +46,7 @@ export class TaskCreateComponent implements OnInit {
     }
 
     const taskData: ITaskCreate = this.taskForm.value;
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
 
     if (!token) {
       this.message = 'No valid token found';
@@ -72,7 +74,7 @@ export class TaskCreateComponent implements OnInit {
   * Loads the list of users from the API to populate the user dropdown.
   */
   private loadUsers(): void {
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
     if (!token) {
       this.message = 'No valid token found';
       return;
@@ -87,24 +89,5 @@ export class TaskCreateComponent implements OnInit {
         this.message = 'Failed to load users.';
       },
     });
-  }
-
-  /**
-  * Retrieves the JWT token from the browser's cookies.
-  *
-  * @returns The token as a string if found and valid, otherwise null.
-  */
-  private getToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )jwtToken=([^;]+)'));
-    if (match) {
-      try {
-        const parsedCookie = JSON.parse(match[2]);
-        return parsedCookie.token;
-      } catch (error) {
-        console.error('Error parsing jwtToken cookie:', error);
-        return null;
-      }
-    }
-    return null;
   }
 }

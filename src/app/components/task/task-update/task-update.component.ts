@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { TaskService } from '../../../service/task.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TokenService } from '../../../service/token.service';
 
 @Component({
   selector: 'app-task-update',
@@ -21,6 +22,7 @@ export class TaskUpdateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
+    private tokenService: TokenService,
     private router: Router
   ) {
     this.updateTaskForm = this.fb.group({
@@ -41,7 +43,7 @@ export class TaskUpdateComponent implements OnInit {
    * Loads the tasks available for update.
    */
   private loadTasks(): void {
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
     if (!token) {
       this.message = 'No valid token found';
       return;
@@ -62,7 +64,7 @@ export class TaskUpdateComponent implements OnInit {
    * Loads the users available for task assignment.
    */
   private loadUsers(): void {
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
     if (!token) {
       this.message = 'No valid token found';
       return;
@@ -89,7 +91,7 @@ export class TaskUpdateComponent implements OnInit {
     }
 
     const taskData = this.updateTaskForm.value;
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
 
     if (!token) {
       this.message = 'No valid token found';
@@ -112,31 +114,13 @@ export class TaskUpdateComponent implements OnInit {
   }
 
   /**
-   * Retrieves the JWT token from the browser's cookies.
-   * @returns The JWT token or null if not found.
-   */
-  private getToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )jwtToken=([^;]+)'));
-    if (match) {
-      try {
-        const parsedCookie = JSON.parse(match[2]);
-        return parsedCookie.token; // Only returns the token value
-      } catch (error) {
-        console.error('Error parsing jwtToken cookie:', error);
-        return null;
-      }
-    }
-    return null;
-  }
-
-  /**
    * Handles the change in the task selection.
    * It now uses the service to fetch the details of the selected task.
    */
   onTaskSelect(): void {
     const selectedTaskId = this.updateTaskForm.value.taskId;
     if (selectedTaskId) {
-      const token = this.getToken();
+      const token = this.tokenService.getToken();
       if (!token) {
         this.message = 'No valid token found';
         return;

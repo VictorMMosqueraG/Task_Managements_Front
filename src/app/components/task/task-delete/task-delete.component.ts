@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { TaskService } from '../../../service/task.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TokenService } from '../../../service/token.service';
 
 @Component({
   selector: 'app-task-delete',
@@ -18,6 +19,7 @@ export class TaskDeleteComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
+    private tokenService:TokenService,
     private router: Router
   ) {
     this.deleteTaskForm = this.fb.group({
@@ -36,7 +38,7 @@ export class TaskDeleteComponent implements OnInit {
    * Displays an error message if the task loading fails.
    */
   private loadTasks(): void {
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
     if (!token) {
       this.message = 'No valid token found';
       return;
@@ -67,7 +69,7 @@ export class TaskDeleteComponent implements OnInit {
     }
 
     const taskId = this.deleteTaskForm.value.taskId;
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
 
     if (!token) {
       this.message = 'No valid token found';
@@ -87,24 +89,5 @@ export class TaskDeleteComponent implements OnInit {
         console.error('Error deleting task:', error);
       }
     });
-  }
-
-  /**
-   * Retrieves the JWT token from the browser cookies.
-   *
-   * @returns {string | null} The token if found, or null if not present or invalid.
-   */
-  private getToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )jwtToken=([^;]+)'));
-    if (match) {
-      try {
-        const parsedCookie = JSON.parse(match[2]);
-        return parsedCookie.token; // Return only the token value
-      } catch (error) {
-        console.error('Error parsing jwtToken cookie:', error);
-        return null;
-      }
-    }
-    return null;
   }
 }

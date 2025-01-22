@@ -3,6 +3,7 @@ import { TaskService } from '../../../service/task.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { TokenService } from '../../../service/token.service';
 
 @Component({
   selector: 'app-task-list',
@@ -27,6 +28,7 @@ export class TaskListComponent  implements OnInit {
 
   constructor(
     private taskService: TaskService,
+    private tokenService:TokenService,
     private router:Router
   ) {}
 
@@ -41,7 +43,7 @@ export class TaskListComponent  implements OnInit {
   * Fetches the list of tasks from the API using the provided filters and token.
   */
   fetchTasks(): void {
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
     if (!token) {
       this.errorMessage = 'No valid token found.';
       return;
@@ -84,25 +86,5 @@ export class TaskListComponent  implements OnInit {
   */
   deleteTask(): void {
     this.router.navigate(['task-delete']);
-  }
-
-
-  /**
-  * Retrieves the JWT token from the browser cookies.
-  *
-  * @returns {string | null} The token if found, or null if not present or invalid.
-  */
-  private getToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )jwtToken=([^;]+)'));
-    if (match) {
-      try {
-        const parsedCookie = JSON.parse(match[2]);
-        return parsedCookie.token; // return only value "token"
-      } catch (error) {
-        console.error('Error parsing jwtToken cookie:', error);
-        return null;
-      }
-    }
-    return null;
   }
 }
