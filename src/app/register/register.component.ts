@@ -36,6 +36,7 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
+    private router: Router
   ) {
     // Initialize the form group with form controls and validators.
     this.userForm = this.fb.group({
@@ -61,7 +62,13 @@ export class RegisterComponent {
     this.authService.register(userData).subscribe({
       next: () => {
         // If the registration is successful, show a success message.
+        alert("User was created")
         this.showSnackBar('User registered successfully!');
+
+         // Navigate to another component after a brief delay.
+         setTimeout(() => {
+          this.router.navigate(['/']); // Replace '/another-component' with your target route.
+        }, 3000);
       },
       error: (err) => {
         // If there's an error, log it and show an error message.
