@@ -17,6 +17,20 @@ export class TaskService {
 
   private api = 'http://localhost:5025/api/tasks'
 
+
+  /**
+  * Generates an authorization header using the stored JWT token.
+  *
+  * @returns HttpHeaders with the Authorization header.
+  */
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.tokenService.getToken();
+    if (!token) {
+      throw new Error('No valid token found');
+    }
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
   /**
   * Fetches tasks from the API with filters and pagination.
   *
@@ -25,7 +39,7 @@ export class TaskService {
   * @returns Observable emitting the list of tasks matching the filters.
   */
   getTasks(filters: any, token: string): Observable<any[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getAuthHeaders();
     let params = new HttpParams();
 
     if (filters.tittle) params = params.set('tittle', filters.tittle);
@@ -47,7 +61,7 @@ export class TaskService {
   * @returns Observable emitting the response from the API.
   */
   createTask(taskData: ITaskCreate, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getAuthHeaders();
     return this.http.post(this.api, taskData, { headers });
   }
 
@@ -59,7 +73,7 @@ export class TaskService {
   * @returns Observable emitting the response from the API.
   */
   deleteTask(taskId: number, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getAuthHeaders();
     const url = `${this.api}/${taskId}`;
     return this.http.delete(url, { headers });
   }
@@ -73,7 +87,7 @@ export class TaskService {
   * @returns Observable emitting the response from the API.
   */
   updateTask(id: number, taskData: IUpdateTaskDto, token: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const headers = this.getAuthHeaders();
     return this.http.put<any>(`${this.api}/${id}`, taskData, { headers });
   }
 
@@ -113,6 +127,12 @@ export class TaskService {
   }
 
 
+  /**
+   * Load tasks from the server using the default API endpoint.
+   * This method allows recycling the task-fetching logic.
+   *
+   * @param callback Callback to handle tasks once they are loaded.
+   */
   loadTasks(callback: (tasks: any[]) => void): void {
     const token = this.tokenService.getToken();
     if (!token) {
@@ -120,7 +140,7 @@ export class TaskService {
     }
 
     this.getTasksDefault().subscribe({
-      next: callback,
+      next: callback, // Calls the callback function to handle the tasks
       error: (error) => {
         console.error('Error loading tasks:', error);
         throw new Error('Failed to load tasks.');
