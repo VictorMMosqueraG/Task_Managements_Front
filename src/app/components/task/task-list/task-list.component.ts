@@ -76,6 +76,7 @@ export class TaskListComponent  implements OnInit {
   * Navigates to the update task page.
   */
   updateTask(): void {
+    this.router.navigate(['task-update']);
   }
 
   /**

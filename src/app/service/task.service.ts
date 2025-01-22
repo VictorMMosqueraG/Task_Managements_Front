@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ITaskCreate } from '../models/task/Task.Create.Dto';
+import { IUpdateTaskDto } from '../models/task/Task.Update.Dto';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,20 @@ export class TaskService {
     const url = `${this.api}/${taskId}`;
     return this.http.delete(url, { headers });
   }
+
+  /**
+  * Updates a task by its ID with the provided data.
+  *
+  * @param id The ID of the task to be updated.
+  * @param taskData The data to update the task with.
+  * @param token JWT token for authorization.
+  * @returns Observable emitting the response from the API.
+  */
+  updateTask(id: number, taskData: IUpdateTaskDto, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<any>(`${this.api}/${id}`, taskData, { headers });
+  }
+
   /**
   * Fetches a list of users from the API.
   *
@@ -83,5 +98,14 @@ export class TaskService {
       .get<{ id: number; tittle: string }[]>('http://localhost:5025/api/tasks/findTask');
   }
 
+  /**
+  * Fetches a list of users from the API.
+  *
+  * @param token JWT token for authorization.
+  * @returns Observable emitting a list of users with id and name properties.
+  */
+  getTaskById(taskId: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:5025/api/tasks/findTaskById/${taskId}`);
+  }
 
 }

@@ -30,5 +30,9 @@ export const routes: Routes = [
   {
     path: 'task-delete',
     loadComponent: ()=> import('./components/task/task-delete/task-delete.component').then(m => m.TaskDeleteComponent)
+  },
+  {
+    path: 'task-update',
+    loadComponent: ()=> import('./components/task/task-update/task-update.component').then(m => m.TaskUpdateComponent)
   }
 ];

@@ -1,0 +1,46 @@
+<div class="container">
+  <h1>Update a Task</h1>
+
+  <form [formGroup]="updateTaskForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="taskId">Task:</label>
+      <select id="taskId" formControlName="taskId" class="form-control" (change)="onTaskSelect()" required>
+        <option *ngFor="let task of tasks" [value]="task.id">{{ task.tittle }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="tittle">Title:</label>
+      <input type="text" formControlName="tittle" id="tittle" class="form-control" />
+    </div>
+
+    <div>
+      <label for="description">Description:</label>
+      <input type="text" formControlName="description" id="description" class="form-control" />
+    </div>
+
+    <div>
+      <label for="status">Status:</label>
+      <select id="status" formControlName="status" class="form-control" required>
+        <option value="InProgress">In Progress</option>
+        <option value="Completed">Completed</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="userId">User:</label>
+      <select formControlName="userId" id="userId" class="form-control">
+        <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-primary" [disabled]="updateTaskForm.invalid">
+        Update Task
+      </button>
+    </div>
+  </form>
+
+  <p *ngIf="message">{{ message }}</p>
+</div>
