@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>Delete a Task</h1>
+
+  <form [formGroup]="deleteTaskForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="TaskId">Task:</label>
+      <select id="TaskId" formControlName="taskId" class="form-control" required>
+        <option *ngFor="let task of tasks" [value]="task.id">{{ task.tittle }}</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-primary" [disabled]="deleteTaskForm.invalid">
+        Delete Task
+      </button>
+    </div>
+  </form>
+
+  <p *ngIf="message">{{ message }}</p>
+</div>

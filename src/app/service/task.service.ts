@@ -47,6 +47,18 @@ export class TaskService {
   }
 
   /**
+  * Deletes a task from the API by its ID.
+  *
+  * @param taskId The ID of the task to be deleted.
+  * @param token JWT token for authorization.
+  * @returns Observable emitting the response from the API.
+  */
+  deleteTask(taskId: number, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.api}/${taskId}`;
+    return this.http.delete(url, { headers });
+  }
+  /**
   * Fetches a list of users from the API.
   *
   * @param token JWT token for authorization.
@@ -60,5 +72,16 @@ export class TaskService {
         map((response) => response.data) // Extract only the "data" property from the response
       );
   }
+
+  /**
+  * Fetches a list of tasks without any filters or pagination.
+  *
+  * @returns Observable emitting a list of tasks with id and title properties.
+  */
+  getTasksDefault(): Observable<{ id: number; tittle: string }[]> {
+    return this.http
+      .get<{ id: number; tittle: string }[]>('http://localhost:5025/api/tasks/findTask');
+  }
+
 
 }

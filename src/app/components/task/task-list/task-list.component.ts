@@ -82,6 +82,7 @@ export class TaskListComponent  implements OnInit {
   * Navigates to the delete task page.
   */
   deleteTask(): void {
+    this.router.navigate(['task-delete']);
   }
 
 

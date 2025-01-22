@@ -26,5 +26,9 @@ export const routes: Routes = [
   {
     path:'task-create',
     loadComponent: ()=> import('./components/task/task-create/task-create.component').then(m => m.TaskCreateComponent)
+  },
+  {
+    path: 'task-delete',
+    loadComponent: ()=> import('./components/task/task-delete/task-delete.component').then(m => m.TaskDeleteComponent)
   }
 ];
