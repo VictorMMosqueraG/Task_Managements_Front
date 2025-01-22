@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { TaskListComponent } from './components/task/task-list/task-list.component';
 
 export const routes: Routes = [
   {
@@ -17,5 +18,9 @@ export const routes: Routes = [
   {
     path:"login",
     loadComponent: ()=> import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path:'task-list',
+    loadComponent: ()=> import('./components/task/task-list/task-list.component').then(m => m.TaskListComponent)
   }
 ];

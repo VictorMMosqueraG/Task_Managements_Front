@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent  {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -44,9 +46,12 @@ export class LoginComponent  {
       next: (token) => {
         // Save the JWT token as a cookie with a max age of 24 hours.
         document.cookie = `jwtToken=${JSON.stringify(token)};path=/;Max-Age=86400`;
+        alert("Login successfully");
         // console.log("login successfully");
         // console.log("cookie:",document.cookie);
-
+        setTimeout(() => {
+          this.router.navigate(['task-list']); // Replace '/another-component' with your target route.
+        }, 1000);
       },
       error: (error) => {
         // Handle errors based on the HTTP status.

@@ -1,0 +1,60 @@
+<div class="task-list">
+  <h1>Task List</h1>
+
+  <h2>Formulario de Filtros</h2>
+  <form (ngSubmit)="applyFilters()">
+    <div>
+      <label for="tittle">Tittle:</label>
+      <input type="text" id="tittle" [(ngModel)]="filters.tittle" name="tittle" class="form-control" />
+    </div>
+
+    <div>
+      <label for="status">Status:</label>
+      <select id="status" [(ngModel)]="filters.status" name="status" class="form-control">
+        <option value="All">All</option>
+        <option value="InProgress">In Progress</option>
+        <option value="Completed">Completed</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="user">User:</label>
+      <input type="text" id="user" [(ngModel)]="filters.user" name="user" class="form-control" />
+    </div>
+
+    <div>
+      <label for="orderBy">Sort Order:</label>
+      <select id="orderBy" [(ngModel)]="filters.orderBy" name="orderBy" class="form-control">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+  </form>
+
+  <div>
+    <button class="btn btn-success" (click)="createTask()">Create New Task</button>
+    <button class="btn btn-success" (click)="updateTask()">Update Task</button>
+    <button class="btn btn-success" (click)="deleteTask()">Delete Task</button>
+  </div>
+
+  <ul *ngIf="tasks?.length; else noTasks">
+    <li *ngFor="let task of tasks">
+      <strong>{{ task.tittle }}</strong><br />
+      {{ task.description }}<br />
+      Status: {{ task.status }}<br />
+      User: {{ task.userName }}<br />
+      Created At: {{ task.created_at }}<br />
+      Updated At: {{ task.updated_at }}<br />
+    </li>
+  </ul>
+  <ng-template #noTasks>
+    <p>No tasks available.</p>
+  </ng-template>
+
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+</div>
