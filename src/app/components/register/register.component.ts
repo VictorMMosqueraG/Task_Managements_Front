@@ -1,9 +1,9 @@
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import { AuthService } from '../service/auth.service';
-import { IUserCreate } from '../models/User.Create.Dto';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
+import { IUserCreate } from '../../models/User.Create.Dto';
 
 /**
 * RegisterComponent is a form-based component that handles user registration.
